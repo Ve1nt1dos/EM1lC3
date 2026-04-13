@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Acceso Secreto</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #1e1e1e, #2c3e50);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    text-align: center;
+}
+
+input {
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background: #27ae60;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.hidden {
+    display: none;
+}
+
+.canvas-box {
+    margin-top: 20px;
+    padding: 20px;
+    background: #ecf0f1;
+    color: #2c3e50;
+    border-radius: 10px;
+    position: relative;
+}
+
+canvas {
+    border: 2px solid #333;
+    border-radius: 10px;
+    background: white;
+    cursor: crosshair;
+}
+
+.brush {
+    font-size: 40px;
+    position: absolute;
+    top: -20px;
+    right: -20px;
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+    <div id="login">
+        <h2>🔒 Acceso privado</h2>
+        <p>Ingresa la contraseña</p>
+        <input type="password" id="password" placeholder="Contraseña">
+        <br>
+        <button onclick="checkPassword()">Entrar</button>
+    </div>
+
+    <div id="content" class="hidden">
+        <div class="canvas-box">
+            <div class="brush">🖌️</div>
+            <h2>¿Cuánta creatividad podrías plasmar aquí?</h2>
+            <canvas id="canvas" width="400" height="300"></canvas>
+        </div>
+
+        <br>
+
+        <!-- Música -->
+        <iframe width="300" height="170"
+        src="https://www.youtube.com/embed/8sQ8d0hP0wI?autoplay=1&loop=1&playlist=8sQ8d0hP0wI"
+        frameborder="0" allow="autoplay"></iframe>
+    </div>
+
+</div>
+
+<script>
+function checkPassword() {
+    const pass = document.getElementById("password").value;
+    if (pass === "11022") {
+        document.getElementById("login").style.display = "none";
+        document.getElementById("content").classList.remove("hidden");
+        initCanvas();
+    } else {
+        alert("Contraseña incorrecta");
+    }
+}
+
+// DIBUJO
+function initCanvas() {
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+
+    let drawing = false;
+
+    canvas.addEventListener("mousedown", () => drawing = true);
+    canvas.addEventListener("mouseup", () => drawing = false);
+    canvas.addEventListener("mouseleave", () => drawing = false);
+
+    canvas.addEventListener("mousemove", draw);
+
+    function draw(e) {
+        if (!drawing) return;
+
+        ctx.lineWidth = 3;
+        ctx.lineCap = "round";
+        ctx.strokeStyle = "#000";
+
+        ctx.lineTo(e.offsetX, e.offsetY);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(e.offsetX, e.offsetY);
+    }
+}
+</script>
+
+</body>
+</html>
